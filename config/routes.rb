@@ -1,20 +1,6 @@
 Rails.application.routes.draw do
-  get "work_hours/index"
-  get "work_hours/edit"
-  get "work_hours/update"
-  get "employees/index"
-  get "employees/new"
-  get "employees/create"
-  get "employees/show"
-  get "employees/edit"
-  get "employees/update"
-  get "employees/destroy"
-  get "schedules/index"
-  get "schedules/show"
-  get "schedules/edit"
-  get "schedules/update"
   devise_for :users
-  root to: "pages#home"
+  # root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -27,4 +13,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root 'schedules#index'
+  
+  resources :schedules, only: [:index, :show, :edit, :update]
+  resources :employees
+  
+  resources :work_hours, only: [:index, :edit] do
+    collection do
+      patch :update
+    end
+  end
 end
