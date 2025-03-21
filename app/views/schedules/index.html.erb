@@ -1,2 +1,48 @@
-<h1>Schedules#index</h1>
-<p>Find me in app/views/schedules/index.html.erb</p>
+<h1>Rota - <%= @date.strftime("%B %Y") %></h1>
+
+<div class="year-month-selector">
+  <%= form_tag schedules_path, method: :get do %>
+    <%= select_tag :year, options_for_select((Date.current.year-1..Date.current.year+1), @year) %>
+    <%= select_tag :month, options_for_select((1..12).map { |m| [Date::MONTHNAMES[m], m] }, @month) %>
+    <%= submit_tag "Go" %>
+  <% end %>
+  
+  <%= link_to "Previous Month", schedules_path(year: @previous_month.year, month: @previous_month.month), class: "btn" %>
+  <%= link_to "Next Month", schedules_path(year: @next_month.year, month: @next_month.month), class: "btn" %>
+</div>
+
+<table class="calendar">
+  <thead>
+    <tr>
+      <% Date::DAYNAMES.each do |day| %>
+        <th><%= day %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @days.group_by { |d| d.beginning_of_week(:sunday) }.each do |week_start, days| %>
+      <tr>
+        <% (week_start..(week_start + 6.days)).each do |date| %>
+          <% if days.include?(date) %>
+            <td class="day <%= 'current' if date == Date.current %>">
+              <div class="date-number"><%= date.day %></div>
+              <div class="employees">
+                <% schedule = @schedules[date] %>
+                <% if schedule && schedule.employees.any? %>
+                  <div class="employee-list">
+                    <% schedule.employees.each do |employee| %>
+                      <div class="employee-tag"><%= employee.name %></div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+              <%= link_to "Edit", schedule_path(date), class: "edit-link" %>
+            </td>
+          <% else %>
+            <td class="day other-month"></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
