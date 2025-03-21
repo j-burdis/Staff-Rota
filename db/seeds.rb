@@ -29,8 +29,9 @@ if Rails.env.development? && Employee.count == 0
     { name: 'Su' },
     { name: 'Michelle' },
     { name: 'Iryna' },
-    { name: 'Nikki' },
     { name: 'Leona' },
+    { name: 'Nikki' },
+    { name: 'Jon' },
     { name: 'Mal' },
     { name: 'Tom' }
   ].each do |employee_data|
