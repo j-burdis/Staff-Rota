@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  get "work_hours/index"
+  get "work_hours/edit"
+  get "work_hours/update"
+  get "employees/index"
+  get "employees/new"
+  get "employees/create"
+  get "employees/show"
+  get "employees/edit"
+  get "employees/update"
+  get "employees/destroy"
+  get "schedules/index"
+  get "schedules/show"
+  get "schedules/edit"
+  get "schedules/update"
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
