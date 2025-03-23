@@ -30,7 +30,8 @@
 }
 
 .day {
-  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border: 1px solid #333;
   height: 90px;
   width: 90px;
   vertical-align: top;
@@ -39,6 +40,11 @@
 
 .other-month {
   background-color: #f9f9f9;
+}
+
+.date-edit {
+  display: flex;
+  justify-content: space-between;
 }
 
 .date-number {
@@ -51,6 +57,6 @@
 }
 
 .current {
-  background-color: #fffde7;
-  border: 1px solid #ffd54f;
+  background-color: #f9f9f9;
+  // border: 1px solid #ffd54f;
 }

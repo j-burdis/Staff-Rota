@@ -1,4 +1,4 @@
-<h1>Edit Schedule for <%= @schedule.date.strftime("%A, %B %d, %Y") %></h1>
+<h1>Edit Schedule for <%= @schedule.date.strftime("%A, %B %e, %Y") %></h1>
 
 <div class="navigation">
   <%= link_to "Back to Calendar", schedules_path(year: @schedule.date.year, month: @schedule.date.month) %>
