@@ -1,1 +1,56 @@
 // Specific CSS for your home-page
+.year-navigation {
+  display: flex;
+}
+
+.months-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.months-calendar {
+  display: flex;
+}
+
+.navigation-calendar {
+  display: flex;
+  flex-direction: column;
+}
+
+.month-navigation {
+  display: flex;
+  justify-content: space-around;
+}
+
+.calendar {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+.day {
+  border: 1px solid #ddd;
+  height: 90px;
+  width: 90px;
+  vertical-align: top;
+  padding: 5px;
+}
+
+.other-month {
+  background-color: #f9f9f9;
+}
+
+.date-number {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.faded {
+  color: #ccc;
+}
+
+.current {
+  background-color: #fffde7;
+  border: 1px solid #ffd54f;
+}
