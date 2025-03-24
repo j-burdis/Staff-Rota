@@ -19,6 +19,11 @@ class SchedulesController < ApplicationController
   def show
     @employees = Employee.where(active: true).order(:name)
     @assigned_employee_ids = @schedule.employees.pluck(:id)
+
+    respond_to do |format|
+      format.html # Regular HTML response
+      format.turbo_frame { render partial: "edit_panel", formats: [:html] }
+    end
   end
 
   def edit
@@ -28,6 +33,8 @@ class SchedulesController < ApplicationController
 
   def update
     employee_ids = params[:employee_ids] || []
+
+    @employees = Employee.where(active: true).order(:name)
 
     # Begin a transaction to ensure all changes are atomic
     ActiveRecord::Base.transaction do
@@ -46,9 +53,25 @@ class SchedulesController < ApplicationController
       end
     end
 
+    @assigned_employee_ids = @schedule.employees.pluck(:id)
+
+    # respond_to do |format|
+    #   format.html { redirect_to schedule_path(@schedule), notice: 'Schedule was successfully updated.' }
+    #   format.json { render json: { success: true } }
+    # end
     respond_to do |format|
       format.html { redirect_to schedule_path(@schedule), notice: 'Schedule was successfully updated.' }
       format.json { render json: { success: true } }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace("schedule-edit-panel",
+                               partial: "edit_panel",
+                               formats: [:html]),
+          turbo_stream.replace("day-#{@schedule.date.to_s}",
+                               partial: "day",
+                               locals: { date: @schedule.date, schedule: @schedule, month: @month })
+        ]
+      end
     end
   end
 

@@ -1,4 +1,4 @@
-<div class="months-calendar">
+<div class="months-calendar" data-controller="schedule">
   <div class="months-list">
     <div class="year-navigation">
       <%= link_to "←", schedules_path(year: @year - 1), class: "btn" %>
@@ -12,63 +12,73 @@
     <% end %>
   </div>
 
-  <% if @month.present? %>
-    
-    <div class="navigation-calendar">
-      <div class="month-navigation">
-        <%= link_to "←", schedules_path(year: @previous_month.year, month: @previous_month.month), class: "btn" %>
-        <h2><%= Date::MONTHNAMES[@month] %></h2>
-        <%= link_to "→", schedules_path(year: @next_month.year, month: @next_month.month), class: "btn" %>
-      </div>
+  <div class="calendar-container">
+    <% if @month.present? %>    
+      <div class="navigation-calendar">
+        <div class="month-navigation">
+          <%= link_to "←", schedules_path(year: @previous_month.year, month: @previous_month.month), class: "btn" %>
+          <h2><%= Date::MONTHNAMES[@month] %></h2>
+          <%= link_to "→", schedules_path(year: @next_month.year, month: @next_month.month), class: "btn" %>
+        </div>
 
-      <table class="calendar">
-        <thead>
-          <tr>
-            <% 7.times do |i| %>
-              <% day_index = i % 7 %>  <!-- 0 = Sunday, 6 = Saturday -->
-              <% day_name = Date::DAYNAMES[day_index] %>
-              <th><%= day_name[0,3] %></th>
-            <% end %>
-          </tr>
-        </thead>
-        <tbody>
-          <% first_day = Date.new(@year, @month, 1) %>
-          <% start_date = first_day.beginning_of_week(:sunday) %>
-          <% end_date = first_day.end_of_month.end_of_week(:sunday) %>
-          
-          <% (start_date..end_date).to_a.in_groups_of(7).each do |week| %>
+        <table class="calendar">
+          <thead>
             <tr>
-              <% week.each do |date| %>
-                <% if date.present? %>
-                  <% is_current_month = date.month == @month %>
-                  <td class="day <%= 'current' if date == Date.current %> <%= 'other-month' unless is_current_month %>">
-                    <div class= "date-edit">
-                      <div class="date-number <%= 'faded' unless is_current_month %>"><%= date.day %></div>
-                      <%= link_to "Edit", schedule_path(date), class: "edit-link" %>
-                    </div>
-                    <% if is_current_month %>
-                      <div class="employees">
-                        <% schedule = @schedules[date] %>
-                        <% if schedule && schedule.employees.any? %>
-                          <div class="employee-list">
-                            <% schedule.employees.each do |employee| %>
-                              <div class="employee-tag"><%= employee.name %></div>
-                            <% end %>
-                          </div>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  </td>
-                <% else %>
-                  <td class="day other-month"></td>
-                <% end %>
+              <% 7.times do |i| %>
+                <% day_index = i % 7 %>  <!-- 0 = Sunday, 6 = Saturday -->
+                <% day_name = Date::DAYNAMES[day_index] %>
+                <th><%= day_name[0,3] %></th>
               <% end %>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% first_day = Date.new(@year, @month, 1) %>
+            <% start_date = first_day.beginning_of_week(:sunday) %>
+            <% end_date = first_day.end_of_month.end_of_week(:sunday) %>
+            
+            <% (start_date..end_date).to_a.in_groups_of(7).each do |week| %>
+              <tr>
+                <% week.each do |date| %>
+                  <% if date.present? %>
+                    <% is_current_month = date.month == @month %>
+                    <td class="day <%= 'current' if date == Date.current %> <%= 'other-month' unless is_current_month %>">
+                      <div class= "date-edit">
+                        <div class="date-number <%= 'faded' unless is_current_month %>"><%= date.day %></div>
+                        <%#= link_to "Edit", schedule_path(date), class: "edit-link" %>
+                        <%= link_to "Edit", schedule_path(date), class: "edit-link", data: { turbo_frame: "schedule-edit-panel" } %>
+                      </div>
+                      <% if is_current_month %>
+                        <div class="employees">
+                          <% schedule = @schedules[date] %>
+                          <% if schedule && schedule.employees.any? %>
+                            <div class="employee-list">
+                              <% schedule.employees.each do |employee| %>
+                                <div class="employee-tag"><%= employee.name %></div>
+                              <% end %>
+                            </div>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </td>
+                  <% else %>
+                    <td class="day other-month"></td>
+                  <% end %>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     <% else %>
       <p class="select-month-prompt">Please select a month to view the calendar.</p>
     <% end %>
-  </div> 
+  </div>
+
+  <div class="edit-panel">
+    <%= turbo_frame_tag "schedule-edit-panel" do %>
+      <div class="edit-placeholder">
+        <p>Select a date to edit the schedule</p>
+      </div>
+    <% end %>
+  </div>
 </div>

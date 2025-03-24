@@ -1,0 +1,29 @@
+<%= turbo_frame_tag "schedule-edit-panel" do %>
+  <div class="edit-panel-content">
+    <h2>Edit Schedule for <%= @schedule.date.strftime("%A, %B %e, %Y") %></h2>
+    
+    <div class="default-hours">
+      <p>Default working hours for <%= @schedule.day_of_week %>: <%= @schedule.default_hours %> hours</p>
+    </div>
+    
+    <%= form_with(url: schedule_path(@schedule.date), method: :patch, data: { turbo_frame: "_top" }) do |form| %>
+      <div class="employees-selection">
+        <h3>Select Employees</h3>
+        
+        <div class="employee-checkboxes">
+          <% @employees.each do |employee| %>
+            <div class="employee-checkbox">
+              <%= check_box_tag "employee_ids[]", employee.id, @assigned_employee_ids.include?(employee.id), id: "employee_#{employee.id}" %>
+              <%= label_tag "employee_#{employee.id}", employee.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <%= form.submit "Update Schedule", class: "update-btn" %>
+        <%= link_to "Cancel", "#", class: "cancel-btn", data: { action: "click->schedule#clearEditPanel" } %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,17 @@
+<td id="day-<%= date.to_s %>" class="day <%= 'current' if date == Date.current %> <%= 'other-month' unless date.month == @month %>">
+  <div class="date-edit">
+    <div class="date-number <%= 'faded' unless date.month == @month %>"><%= date.day %></div>
+    <%= link_to "Edit", schedule_path(date, format: :turbo_frame), class: "edit-link", data: { turbo_frame: "schedule-edit-panel" } %>
+  </div>
+  <% if date.month == @month %>
+    <div class="employees">
+      <% if schedule && schedule.employees.any? %>
+        <div class="employee-list">
+          <% schedule.employees.each do |employee| %>
+            <div class="employee-tag"><%= employee.name %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</td>
