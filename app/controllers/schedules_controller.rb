@@ -12,8 +12,9 @@ class SchedulesController < ApplicationController
     @days = (@date.beginning_of_month..@date.end_of_month).to_a
 
     # Preload existing schedules for this month
-    @schedules = Schedule.where(date: @days).includes(:employees)
-                        .index_by(&:date)
+    @schedules = Schedule.where(date: @days)
+                         .includes(employee_schedules: :employee)
+                         .index_by(&:date)
   end
 
   def show
@@ -32,9 +33,15 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    employee_ids = params[:employee_ids] || []
+    # Find or create the schedule for the specific date
+    @schedule = Schedule.find_or_create_by(date: params[:id])
 
-    @employees = Employee.where(active: true).order(:name)
+    # Ensure we have the correct month and year for context
+    @month = @schedule.date.month
+    @year = @schedule.date.year
+
+    # Normalize employee_ids to an array, defaulting to empty array
+    employee_ids = params[:employee_ids] || []
 
     # Begin a transaction to ensure all changes are atomic
     ActiveRecord::Base.transaction do
@@ -53,24 +60,43 @@ class SchedulesController < ApplicationController
       end
     end
 
-    @assigned_employee_ids = @schedule.employees.pluck(:id)
+    # Reload the schedule to get updated employees
+    @schedule.reload
 
-    # respond_to do |format|
-    #   format.html { redirect_to schedule_path(@schedule), notice: 'Schedule was successfully updated.' }
-    #   format.json { render json: { success: true } }
-    # end
     respond_to do |format|
-      format.html { redirect_to schedule_path(@schedule), notice: 'Schedule was successfully updated.' }
-      format.json { render json: { success: true } }
       format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace("schedule-edit-panel",
-                               partial: "edit_panel",
-                               formats: [:html]),
-          turbo_stream.replace("day-#{@schedule.date.to_s}",
-                               partial: "day",
-                               locals: { date: @schedule.date, schedule: @schedule, month: @month })
-        ]
+        render turbo_stream: turbo_stream.replace(
+          "day-#{@schedule.date}", 
+          partial: 'day', 
+          locals: { 
+            date: @schedule.date, 
+            month: @month,
+            schedule: @schedule
+          }
+        )
+      end
+
+      format.html do
+        redirect_to schedule_path(@schedule), 
+                    notice: 'Schedule was successfully updated.'
+      end
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    # Handle validation errors
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "schedule-edit-panel",
+          partial: 'edit_panel',
+          locals: { 
+            schedule: @schedule,
+            error: e.message 
+          }
+        )
+      end
+
+      format.html do
+        render :edit, status: :unprocessable_entity
       end
     end
   end

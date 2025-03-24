@@ -6,7 +6,12 @@
       <p>Default working hours for <%= @schedule.day_of_week %>: <%= @schedule.default_hours %> hours</p>
     </div>
     
-    <%= form_with(url: schedule_path(@schedule.date), method: :patch, data: { turbo_frame: "_top" }) do |form| %>
+    <%= form_with(url: schedule_path(@schedule.date), method: :patch, data: { 
+      turbo_frame: "_top",
+      controller: "schedule", 
+      action: "turbo:submit-end->schedule#updateCalendarDay",
+      date: @schedule.date.to_s
+      }) do |form| %>
       <div class="employees-selection">
         <h3>Select Employees</h3>
         
