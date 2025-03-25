@@ -1,7 +1,8 @@
 .calendar {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 2px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .day {
@@ -17,9 +18,8 @@
   background-color: #f9f9f9;
 }
 
-.date-edit {
+.date-employees {
   display: flex;
-  justify-content: space-between;
 }
 
 .date-number {
@@ -33,5 +33,21 @@
 
 .current {
   background-color: #f9f9f9;
-  // border: 1px solid #ffd54f;
+}
+
+.day-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+
+.day-link:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.day {
+  position: relative;
 }

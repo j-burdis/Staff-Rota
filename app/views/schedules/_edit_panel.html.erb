@@ -1,10 +1,7 @@
 <%= turbo_frame_tag "schedule-edit-panel" do %>
   <div class="edit-panel-content">
-    <h2>Edit Schedule for <%= @schedule.date.strftime("%A, %B %e, %Y") %></h2>
-    
-    <div class="default-hours">
-      <p>Default working hours for <%= @schedule.day_of_week %>: <%= @schedule.default_hours %> hours</p>
-    </div>
+    <h2><%= @schedule.date.strftime("%A") %></h2>
+    <h2><%= @schedule.date.strftime("%B %e") %></h2>
     
     <%= form_with(url: schedule_path(@schedule.date), method: :patch, data: { 
       turbo_frame: "_top",
@@ -13,8 +10,6 @@
       date: @schedule.date.to_s
       }) do |form| %>
       <div class="employees-selection">
-        <h3>Select Employees</h3>
-        
         <div class="employee-checkboxes">
           <% @employees.each do |employee| %>
             <div class="employee-checkbox">
