@@ -11,7 +11,7 @@
   height: 90px;
   width: 90px;
   vertical-align: top;
-  padding: 5px;
+  padding: 4px;
 }
 
 .other-month {
@@ -22,9 +22,12 @@
   display: flex;
 }
 
+.employee-list {
+  padding-left: 8px;
+}
+
 .date-number {
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .faded {
