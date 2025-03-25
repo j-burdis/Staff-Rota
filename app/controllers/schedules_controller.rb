@@ -4,6 +4,9 @@ class SchedulesController < ApplicationController
     @year = params[:year].present? ? params[:year].to_i : Date.current.year
     @month = params[:month].present? ? params[:month].to_i : Date.current.month
 
+    @selected_year = @year
+    @selected_month = @month
+
     @date = Date.new(@year, @month, 1)
     @previous_month = @date.prev_month
     @next_month = @date.next_month

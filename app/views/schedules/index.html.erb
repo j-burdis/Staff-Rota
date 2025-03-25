@@ -7,8 +7,8 @@
     </div>
     <% (1..12).each do |m| %>
       <% month_name = Date::MONTHNAMES[m] %>
-      <% is_current = (@year == Date.current.year && m == Date.current.month) %>
-      <%= link_to month_name, schedules_path(year: @year, month: m), class: "month-link #{is_current ? 'current-month' : ''}" %>
+      <% is_selected = (@year == @selected_year && m == @selected_month) %>
+      <%= link_to month_name, schedules_path(year: @year, month: m), class: "month-link #{is_selected ? 'selected-month' : ''}" %>
     <% end %>
   </div>
 
