@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :employees do
     member do
       patch :deactivate
+      patch :reactivate
     end
   end
   

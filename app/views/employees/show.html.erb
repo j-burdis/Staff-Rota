@@ -14,6 +14,8 @@
       
       <% if @employee.active? %>
         <%= button_to 'Deactivate', deactivate_employee_path(@employee), method: :patch, class: 'btn btn-warning', data: { confirm: 'Are you sure you want to deactivate this employee?' } %>
+      <% else %>
+        <%= button_to 'Reactivate', reactivate_employee_path(@employee), method: :patch, class: 'btn btn-success', data: { confirm: 'Are you sure you want to reactivate this employee?' } %>
       <% end %>
       
       <%= button_to 'Delete', employee_path(@employee), method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to permanently delete this employee?' } %>

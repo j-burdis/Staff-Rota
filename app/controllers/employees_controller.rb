@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: %i[show edit update destroy]
+  before_action :set_employee, only: %i[show edit update destroy deactivate reactivate]
 
   def index
     @employees = Employee.all
@@ -36,9 +36,17 @@ class EmployeesController < ApplicationController
 
   def deactivate
     if @employee.update(active: false)
-      redirect_to employees_path, notice: 'Employee deactivated.'
+      redirect_to employees_path, notice: 'Employee was successfully deactivated.'
     else
       redirect_to employee_path(@employee), alert: 'Could not deactivate employee.'
+    end
+  end
+
+  def reactivate
+    if @employee.update(active: true)
+      redirect_to employees_path, notice: 'Employee was successfully reactivated.'
+    else
+      redirect_to employee_path(@employee), alert: 'Could not reactivate employee.'
     end
   end
 
@@ -54,6 +62,11 @@ class EmployeesController < ApplicationController
 
   def set_employee
     @employee = Employee.find(params[:id])
+
+    if @employee.nil?
+      flash[:alert] = 'Employee not found.'
+      redirect_to employees_path
+    end
   end
 
   def employee_params

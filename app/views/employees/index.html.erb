@@ -11,11 +11,11 @@
           <span class="<%= employee.active? ? 'text-black' : 'text-gray-400 line-through' %>">
             <%= employee.name %>
           </span>
-        <% end %>
-        <% if employee.active? %>
-          <span class="text-green-600"> - Active</span>
-        <% else %>
-          <span class="text-red-600"> - Inactive</span>
+          <% if employee.active? %>
+            <span class="text-green-600"> - Active</span>
+          <% else %>
+            <span class="text-red-600"> - Inactive</span>
+          <% end %>
         <% end %>
       </div>
     <% end %>
