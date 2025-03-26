@@ -37,19 +37,19 @@ class SchedulesController < ApplicationController
   def update
     # Find or create the schedule for the specific date
     @schedule = Schedule.find_or_create_by(date: params[:id])
-  
+
     # Normalize employee_ids to an array, defaulting to empty array
     employee_ids = params[:employee_ids] || []
-  
+
     # Begin a transaction to ensure all changes are atomic
     ActiveRecord::Base.transaction do
       # Remove employees not in the new list
       @schedule.employee_schedules.where.not(employee_id: employee_ids).destroy_all
-  
+
       # Add new employees
       employee_ids.each do |employee_id|
         next if @schedule.employee_schedules.exists?(employee_id: employee_id)
-  
+
         # Create with default hours for that day
         @schedule.employee_schedules.create!(
           employee_id: employee_id,
@@ -57,23 +57,22 @@ class SchedulesController < ApplicationController
         )
       end
     end
-  
+
     # Reload the schedule to get updated employees
     @schedule.reload
-  
+
     # Prepare response data
     response_data = {
-      employees: @schedule.employees.map do |employee| 
-        { 
-          id: employee.id, 
-          name: employee.name 
-        } 
+      employees: @schedule.employees.map do |employee|
+        {
+          id: employee.id,
+          name: employee.name
+        }
       end
     }
-  
+
     # Respond with JSON for the Stimulus controller
     render json: response_data
-  
   rescue ActiveRecord::RecordInvalid => e
     # Render error response
     render json: { 
