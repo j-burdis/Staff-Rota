@@ -21,7 +21,7 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    @employees = Employee.where(active: true).order(:name)
+    @employees = Employee.where(active: true)
     @assigned_employee_ids = @schedule.employees.pluck(:id)
 
     respond_to do |format|
@@ -30,7 +30,7 @@ class SchedulesController < ApplicationController
   end
 
   def edit
-    @employees = Employee.where(active: true).order(:name)
+    @employees = Employee.where(active: true)
     @assigned_employee_ids = @schedule.employees.pluck(:id)
   end
 

@@ -19,7 +19,11 @@ Rails.application.routes.draw do
   root 'schedules#index'
   
   resources :schedules, only: [:index, :show, :edit, :update]
-  resources :employees
+  resources :employees do
+    member do
+      patch :deactivate
+    end
+  end
   
   resources :work_hours, only: [:index, :edit] do
     collection do

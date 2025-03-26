@@ -1,10 +1,10 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
     <div class="navbar-logo-name">
-      <%= link_to "#", class: "navbar-brand" do %>
+      <%= link_to root_path, class: "navbar-brand" do %>
         <i class="fa-solid fa-calendar-days"></i>
       <% end %>
-      <h2>MyRota</h2>
+        <h2>MyRota</h2>
     </div>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,14 +17,15 @@
           <%# <li class="nav-item active"> %>
             <%#= link_to "Home", "#", class: "nav-link" %>
           <%# </li> %>
-          <%# <li class="nav-item"> %>
-            <%#= link_to "Messages", "#", class: "nav-link" %>
-          <%# </li> %>
+          <li class="nav-item">
+            <%= link_to "Calendar", root_path, class: "nav-link" %>
+          </li>
           <li class="nav-item dropdown">
             <a href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fa-solid fa-bars"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <%= link_to "Employees", employees_path, class: "dropdown-item" %>
               <%= button_to "Log out", destroy_user_session_path, method: :delete, data: {turbo: :false}, class: "dropdown-item" %>
             </div>
           </li>

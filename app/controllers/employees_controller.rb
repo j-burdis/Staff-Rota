@@ -2,7 +2,8 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[show edit update destroy]
 
   def index
-    @employees = Employee.order(:name)
+    @employees = Employee.all
+    @new_employee = Employee.new
   end
 
   def new
@@ -13,9 +14,9 @@ class EmployeesController < ApplicationController
     @employee = Employee.new(employee_params)
 
     if @employee.save
-      redirect_to employees_path, notice: 'Employee was successfully created.'
+      redirect_to employees_path, notice: 'Employee successfully created.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -27,15 +28,26 @@ class EmployeesController < ApplicationController
 
   def update
     if @employee.update(employee_params)
-      redirect_to employees_path, notice: 'Employee was successfully updated.'
+      redirect_to employees_path, notice: 'Employee successfully updated.'
     else
       render :edit
     end
   end
 
+  def deactivate
+    if @employee.update(active: false)
+      redirect_to employees_path, notice: 'Employee deactivated.'
+    else
+      redirect_to employee_path(@employee), alert: 'Could not deactivate employee.'
+    end
+  end
+
   def destroy
-    @employee.update(active: false)
-    redirect_to employees_path, notice: 'Employee was deactivated.'
+    if @employee.destroy
+      redirect_to employees_path, notice: 'Employee permanently deleted.'
+    else
+      redirect_to employee_path(@employee), alert: 'Could not delete employee.'
+    end
   end
 
   private
