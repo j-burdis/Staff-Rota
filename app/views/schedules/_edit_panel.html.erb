@@ -6,7 +6,8 @@
     url: schedule_path(@schedule.date), 
     method: :patch, 
     data: { 
-      action: "submit->schedule#updateSchedule" 
+      action: "submit->schedule#updateSchedule",
+      date: @schedule.date.to_s
     }
   ) do |form| %>
     <div class="employees-selection">
