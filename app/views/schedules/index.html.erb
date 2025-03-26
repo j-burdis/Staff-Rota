@@ -19,11 +19,12 @@
     next_month: @next_month 
   } %>
 
-  <div class="edit-panel">
-    <%= turbo_frame_tag "schedule-edit-panel" do %>
-      <div class="edit-placeholder">
-        <p>Select a date to edit</p>
-      </div>
-    <% end %>
+  <div 
+    class="edit-panel" 
+    data-schedule-target="editPanel"
+  >
+    <div class="edit-placeholder">
+      <p>Select a date to edit</p>
+    </div>
   </div>
 </div>

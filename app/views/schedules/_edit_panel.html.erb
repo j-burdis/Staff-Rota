@@ -1,29 +1,33 @@
-<%= turbo_frame_tag "schedule-edit-panel" do %>
-  <div class="edit-panel-content">
-    <h2><%= @schedule.date.strftime("%A") %></h2>
-    <h2><%= @schedule.date.strftime("%B %e") %></h2>
+<div class="edit-panel-content">
+  <h2><%= @schedule.date.strftime("%A") %></h2>
+  <h2><%= @schedule.date.strftime("%B %e") %></h2>
+  
+  <%= form_with(
+    url: schedule_path(@schedule.date), 
+    method: :patch, 
+    data: { 
+      action: "submit->schedule#updateSchedule" 
+    }
+  ) do |form| %>
+    <div class="employees-selection">
+      <div class="employee-checkboxes">
+        <% @employees.each do |employee| %>
+          <div class="employee-checkbox">
+            <%= check_box_tag "employee_ids[]", employee.id, @assigned_employee_ids.include?(employee.id), id: "employee_#{employee.id}" %>
+            <%= label_tag "employee_#{employee.id}", employee.name %>
+          </div>
+        <% end %>
+      </div>
+    </div>
     
-    <%= form_with(url: schedule_path(@schedule.date), method: :patch, data: { 
-      turbo_frame: "_top",
-      controller: "schedule", 
-      action: "turbo:submit-end->schedule#updateCalendarDay",
-      date: @schedule.date.to_s
-      }) do |form| %>
-      <div class="employees-selection">
-        <div class="employee-checkboxes">
-          <% @employees.each do |employee| %>
-            <div class="employee-checkbox">
-              <%= check_box_tag "employee_ids[]", employee.id, @assigned_employee_ids.include?(employee.id), id: "employee_#{employee.id}" %>
-              <%= label_tag "employee_#{employee.id}", employee.name %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-      
-      <div class="form-actions">
-        <%= form.submit "Update", class: "update-btn" %>
-        <%= link_to "Cancel", "#", class: "cancel-btn", data: { action: "click->schedule#clearEditPanel" } %>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+    <div class="form-actions">
+      <%= form.submit "Update", class: "update-btn" %>
+      <%= link_to "Cancel", "#", 
+        class: "cancel-btn", 
+        data: { 
+          action: "click->schedule#clearEditPanel" 
+        } 
+      %>
+    </div>
+  <% end %>
+</div>

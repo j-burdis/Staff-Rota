@@ -25,8 +25,7 @@ class SchedulesController < ApplicationController
     @assigned_employee_ids = @schedule.employees.pluck(:id)
 
     respond_to do |format|
-      format.html # Regular HTML response
-      format.turbo_frame { render partial: "edit_panel", formats: [:html] }
+      format.html { render partial: 'edit_panel', layout: false, formats: [:html] }
     end
   end
 
@@ -66,42 +65,22 @@ class SchedulesController < ApplicationController
     # Reload the schedule to get updated employees
     @schedule.reload
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "day-#{@schedule.date}", 
-          partial: 'day', 
+    # Render the updated day partial 
+    render partial: 'day', 
           locals: { 
             date: @schedule.date, 
             month: @month,
             schedule: @schedule
           }
-        )
-      end
 
-      format.html do
-        redirect_to schedule_path(@schedule), 
-                    notice: 'Schedule was successfully updated.'
-      end
-    end
   rescue ActiveRecord::RecordInvalid => e
-    # Handle validation errors
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "schedule-edit-panel",
-          partial: 'edit_panel',
+    # Render error partial or return error response
+    render partial: 'edit_panel', 
+          status: :unprocessable_entity, 
           locals: { 
             schedule: @schedule,
             error: e.message 
           }
-        )
-      end
-
-      format.html do
-        render :edit, status: :unprocessable_entity
-      end
-    end
   end
 
   private

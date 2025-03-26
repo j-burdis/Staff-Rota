@@ -1,5 +1,9 @@
 <td id="day-<%= date.to_s %>" class="day <%= 'current' if date == Date.current %> <%= 'other-month' unless date.month == @month %>">
-  <%= link_to schedule_path(date, format: :turbo_frame), class: "day-link", data: { turbo_frame: "schedule-edit-panel" } do %>
+  <%= link_to schedule_path(date), 
+    class: "day-link", 
+    data: { 
+      action: "click->schedule#loadScheduleEdit" 
+    } do %>
     <div class="date-employees">
       <div class="date">
         <div class="date-number <%= 'faded' unless date.month == @month %>"><%= date.day %></div>
