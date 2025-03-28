@@ -104,79 +104,6 @@ export default class extends Controller {
     }
   }
 
-  // updateEmployeeList(employeeId, formData) {
-  //   const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
-    
-  //   if (listItem) {
-  //     const nameSpan = listItem.closest('.employees-list-item')
-  //     const nameElement = nameSpan.querySelector('.employees-list-item-name')
-  //     const statusElement = nameSpan.querySelector('.employees-list-item-status-active, .employees-list-item-status-inactive')
-      
-  //     // Update name
-  //     const newName = formData.get('employee[name]')
-  //     nameElement.firstChild.textContent = newName
-
-  //     // Update active status only if the active field is present in formData
-  //     if (formData.has('employee[active]')) {
-  //       const isActive = formData.get('employee[active]') === '1'
-  //       if (isActive) {
-  //         nameElement.classList.remove('inactive')
-  //         statusElement.textContent = ' - Active'
-  //         statusElement.className = 'employees-list-item-status-active'
-  //       } else {
-  //         nameElement.classList.add('inactive')
-  //         statusElement.textContent = ' - Inactive'
-  //         statusElement.className = 'employees-list-item-status-inactive'
-  //       }
-  //     }
-  //   }
-  // }
-
-  // updateEmployeeList(employeeId, formData) {
-  //   console.log('Updating employee list:', {
-  //     employeeId: employeeId,
-  //     formData: Object.fromEntries(formData),
-  //   });
-
-  //   const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
-    
-  //   if (listItem) {
-  //     const nameSpan = listItem.closest('.employees-list-item')
-  //     const nameElement = nameSpan.querySelector('.employees-list-item-name')
-  //     const statusElement = nameSpan.querySelector('.employees-list-item-status-active, .employees-list-item-status-inactive')
-      
-  //     console.log('List item elements:', {
-  //       nameSpan,
-  //       nameElement,
-  //       statusElement
-  //     });
-      
-  //     // Update name
-  //     const newName = formData.get('employee[name]')
-  //     nameElement.firstChild.textContent = newName
-
-  //     // Determine the current active status from the details view
-  //     const detailsStatusElement = this.detailsTarget.querySelector('.employees-show-status span')
-  //     const isCurrentlyActive = detailsStatusElement.classList.contains('employees-list-item-status-active')
-
-  //     console.log('Current active status:', {
-  //       isCurrentlyActive,
-  //       detailsStatusElement
-  //     });
-
-  //     // Update status based on the current status in the details view
-  //     if (isCurrentlyActive) {
-  //       nameElement.classList.remove('inactive')
-  //       statusElement.textContent = ' - Active'
-  //       statusElement.className = 'employees-list-item-status-active'
-  //     } else {
-  //       nameElement.classList.add('inactive')
-  //       statusElement.textContent = ' - Inactive'
-  //       statusElement.className = 'employees-list-item-status-inactive'
-  //     }
-  //   }
-  // }
-
   updateEmployeeList(employeeId, formData, preserveName = false) {
     const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
     
@@ -244,59 +171,6 @@ export default class extends Controller {
     }
   }
 
-  // async deactivate(event) {
-  //   event.preventDefault()
-  //   const employeeId = this.selectedEmployeeIdValue
-
-  //   try {
-  //     const response = await fetch(`/employees/${employeeId}/deactivate`, {
-  //       method: 'PATCH',
-  //       headers: {
-  //         'Accept': 'text/html'
-  //       }
-  //     })
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-
-  //     const html = await response.text()
-      
-  //     // Update details
-  //     this.detailsTarget.innerHTML = html
-      
-  //     // Update employee list
-  //     this.updateEmployeeList(employeeId, new FormData())
-  //   } catch (error) {
-  //     console.error('Error deactivating employee:', error)
-  //   }
-  // }
-
-  // async deactivate(event) {
-  //   event.preventDefault()
-  //   const employeeId = this.selectedEmployeeIdValue
-
-  //   try {
-  //     const response = await fetch(`/employees/${employeeId}/deactivate`, 
-  //       this.getFetchOptions('PATCH')
-  //     )
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-
-  //     const html = await response.text()
-      
-  //     // Update details
-  //     this.detailsTarget.innerHTML = html
-      
-  //     // Update employee list
-  //     this.updateEmployeeList(employeeId, new FormData())
-  //   } catch (error) {
-  //     console.error('Error deactivating employee:', error)
-  //   }
-  // }
-
   async deactivate(event) {
     event.preventDefault()
     const employeeId = this.selectedEmployeeIdValue
@@ -322,91 +196,6 @@ export default class extends Controller {
     }
   }
 
-  // async reactivate(event) {
-  //   event.preventDefault()
-  //   const employeeId = this.selectedEmployeeIdValue
-
-  //   try {
-  //     const response = await fetch(`/employees/${employeeId}/reactivate`, {
-  //       method: 'PATCH',
-  //       headers: {
-  //         'Accept': 'text/html'
-  //       }
-  //     })
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-
-  //     const html = await response.text()
-      
-  //     // Update details
-  //     this.detailsTarget.innerHTML = html
-      
-  //     // Update employee list
-  //     this.updateEmployeeList(employeeId, new FormData())
-  //   } catch (error) {
-  //     console.error('Error reactivating employee:', error)
-  //   }
-  // }
-
-  // async reactivate(event) {
-  //   event.preventDefault()
-  //   const employeeId = this.selectedEmployeeIdValue
-
-  //   try {
-  //     const response = await fetch(`/employees/${employeeId}/reactivate`, 
-  //       this.getFetchOptions('PATCH')
-  //     )
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-
-  //     const html = await response.text()
-      
-  //     // Update details
-  //     this.detailsTarget.innerHTML = html
-      
-  //     // Update employee list
-  //     this.updateEmployeeList(employeeId, new FormData())
-  //   } catch (error) {
-  //     console.error('Error reactivating employee:', error)
-  //   }
-  // }
-
-  // async destroy(event) {
-  //   event.preventDefault()
-  //   const employeeId = this.selectedEmployeeIdValue
-
-  //   if (!confirm('Are you sure you want to permanently delete this employee?')) {
-  //     return
-  //   }
-
-  //   try {
-  //     const response = await fetch(`/employees/${employeeId}`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         'Accept': 'text/html'
-  //       }
-  //     })
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-
-  //     // Remove the employee from the list
-  //     const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`).closest('.employees-list-item')
-  //     listItem.remove()
-
-  //     // Clear details and edit form
-  //     this.detailsTarget.innerHTML = ''
-  //     this.editFormTarget.innerHTML = ''
-  //   } catch (error) {
-  //     console.error('Error deleting employee:', error)
-  //   }
-  // }
-
   async reactivate(event) {
     event.preventDefault()
     const employeeId = this.selectedEmployeeIdValue
@@ -431,35 +220,6 @@ export default class extends Controller {
       console.error('Error reactivating employee:', error)
     }
   }
-
-  // async destroy(event) {
-  //   event.preventDefault()
-  //   const employeeId = this.selectedEmployeeIdValue
-
-  //   if (!confirm('Are you sure you want to permanently delete this employee?')) {
-  //     return
-  //   }
-
-  //   try {
-  //     const response = await fetch(`/employees/${employeeId}`, 
-  //       this.getFetchOptions('DELETE')
-  //     )
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-
-  //     // Remove the employee from the list
-  //     const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`).closest('.employees-list-item')
-  //     listItem.remove()
-
-  //     // Clear details and edit form
-  //     this.detailsTarget.innerHTML = ''
-  //     this.editFormTarget.innerHTML = ''
-  //   } catch (error) {
-  //     console.error('Error deleting employee:', error)
-  //   }
-  // }
 
   async destroy(event) {
     event.preventDefault()

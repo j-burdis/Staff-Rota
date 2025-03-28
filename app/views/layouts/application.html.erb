@@ -18,7 +18,7 @@
   </head>
 
   <body>
-    <% unless controller_name == "employees" && action_name == "show" %>
+    <% unless controller_name == "employees" && action_name == "show" || action_name == "deactivate" || action_name == "reactivate" %>
       <%= render "shared/navbar" %>
     <% end %>
     <%= render "shared/flashes" %>
