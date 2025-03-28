@@ -14,6 +14,7 @@
     <div>
       <% @employees.each do |employee| %>
         <div 
+          id="employee_<%= employee.id %>"
           class="employees-list-item" 
           data-action="click->employees#showEmployee">
           <span 

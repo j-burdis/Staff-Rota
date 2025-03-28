@@ -1,85 +1,83 @@
 <!-- app/views/employees/show.html.erb -->
-<div class="employees-show-container">
-  <div class="employees-show-header">
-    <input 
-      type="text" 
-      name="employee[name]" 
-      value="<%= @employee.name %>" 
-      class="employees-show-title" 
-      disabled 
-      data-employees-target="nameInput"
-      data-action="click->employees#startEdit"
-    />
+<div class="employees-show-header">
+  <input 
+    type="text" 
+    name="employee[name]" 
+    value="<%= @employee.name %>" 
+    class="employees-show-title" 
+    disabled 
+    data-employees-target="nameInput"
+    data-action="click->employees#startEdit"
+  />
+  
+  <div class="employees-show-status">
+    <strong>Status:</strong> 
+    <span class="employee-status <%= @employee.active? ? 'employees-list-item-status-active' : 'employees-list-item-status-inactive' %>">
+      <%= @employee.active? ? 'Active' : 'Inactive' %>
+    </span>
+  </div>
+</div>
+
+<div class="employees-show-actions">
+  <div class="default-actions">
+    <a 
+      href="#" 
+      data-action="click->employees#startEdit" 
+      class="btn btn-secondary">
+      Edit
+    </a>
     
-    <div class="employees-show-status">
-      <strong>Status:</strong> 
-      <span class="employee-status <%= @employee.active? ? 'employees-list-item-status-active' : 'employees-list-item-status-inactive' %>">
-        <%= @employee.active? ? 'Active' : 'Inactive' %>
-      </span>
-    </div>
+    <% if @employee.active? %>
+      <button 
+        data-action="click->employees#deactivate" 
+        class="btn btn-warning">
+        Deactivate
+      </button>
+    <% else %>
+      <button 
+        data-action="click->employees#reactivate" 
+        class="btn btn-success">
+        Reactivate
+      </button>
+    <% end %>
+    
+    <button 
+      data-action="click->employees#destroy" 
+      class="btn btn-danger">
+      Delete
+    </button>
   </div>
 
-  <div class="employees-show-actions">
-    <div class="default-actions">
-      <a 
-        href="#" 
-        data-action="click->employees#startEdit" 
-        class="btn btn-secondary">
-        Edit
-      </a>
+  <div class="edit-actions hidden">
+    <%= form_with(
+      model: @employee, 
+      local: false,
+      data: { 
+        action: 'submit->employees#updateEmployee'
+      }
+    ) do |form| %>
+      <%= form.text_field :name, 
+          class: 'employees-show-title', 
+          placeholder: 'Enter employee name',
+          required: true,
+          data: { 
+            employees_target: 'nameInput'
+          } %>
       
-      <% if @employee.active? %>
-        <button 
-          data-action="click->employees#deactivate" 
-          class="btn btn-warning">
-          Deactivate
-        </button>
-      <% else %>
-        <button 
-          data-action="click->employees#reactivate" 
-          class="btn btn-success">
-          Reactivate
-        </button>
-      <% end %>
-      
-      <button 
-        data-action="click->employees#destroy" 
-        class="btn btn-danger">
-        Delete
-      </button>
-    </div>
+      <div class="employees-form-group">
+        <%= form.check_box :active %>
+        <span>Employee is currently active</span>
+      </div>
 
-    <div class="edit-actions hidden">
-      <%= form_with(
-        model: @employee, 
-        local: false,
-        data: { 
-          action: 'submit->employees#updateEmployee'
-        }
-      ) do |form| %>
-        <%= form.text_field :name, 
-            class: 'employees-show-title', 
-            placeholder: 'Enter employee name',
-            required: true,
-            data: { 
-              employees_target: 'nameInput'
-            } %>
-        
-        <div class="employees-form-group">
-          <%= form.check_box :active %>
-          <span>Employee is currently active</span>
-        </div>
-
-        <div class="edit-form-actions">
-          <%= form.submit 'Update', class: 'btn btn-primary' %>
-          <a 
-            href="#" 
-            data-action="click->employees#cancelEdit" 
-            class="btn btn-secondary">
-            Cancel
-          </a>
-        </div>
-      <% end %>
-    </div>
+      <div class="edit-form-actions">
+        <%= form.submit 'Update', class: 'btn btn-primary' %>
+        <a 
+          href="#" 
+          data-action="click->employees#cancelEdit" 
+          class="btn btn-secondary">
+          Cancel
+        </a>
+      </div>
+    <% end %>
   </div>
 </div>

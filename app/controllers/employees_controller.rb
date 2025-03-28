@@ -68,7 +68,13 @@ class EmployeesController < ApplicationController
   def destroy
     if @employee.destroy
       respond_to do |format|
-        format.html { redirect_to employees_path, notice: 'Employee permanently deleted.' }
+        format.html {
+          flash[:notice] = 'Employee permanently deleted.'
+          redirect_to employees_path
+        }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.remove("employee_#{@employee.id}")
+        }
       end
     else
       redirect_to employee_path(@employee), alert: 'Could not delete employee.'

@@ -18,7 +18,9 @@
   </head>
 
   <body>
-    <%= render "shared/navbar" %>
+    <% unless controller_name == "employees" && action_name == "show" %>
+      <%= render "shared/navbar" %>
+    <% end %>
     <%= render "shared/flashes" %>
 
     <%= yield %>
