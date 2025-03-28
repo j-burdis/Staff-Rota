@@ -24,13 +24,19 @@ class EmployeesController < ApplicationController
   end
 
   def edit
+    render layout: false
   end
 
   def update
+    # if @employee.update(employee_params)
+    #   redirect_to employees_path, notice: 'Employee successfully updated.'
+    # else
+    #   render :edit
+    # end
     if @employee.update(employee_params)
-      redirect_to employees_path, notice: 'Employee successfully updated.'
+      render 'show', layout: false
     else
-      render :edit
+      render 'edit', layout: false, status: :unprocessable_entity
     end
   end
 

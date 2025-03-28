@@ -1,39 +1,45 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">Edit Employee: <%= @employee.name %></h2>
-
-  <%= form_with(model: @employee, local: true, class: 'max-w-md mx-auto') do |form| %>
-    <% if @employee.errors.any? %>
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-        <h3 class="font-bold mb-2"><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h3>
-        <ul class="list-disc list-inside">
-          <% @employee.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <div class="mb-4">
-      <%= form.label :name, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-      <%= form.text_field :name, 
-          class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', 
-          placeholder: 'Enter employee name',
-          required: true %>
-    </div>
-
-    <div class="mb-4">
-      <%= form.label :active, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-      <%= form.check_box :active, 
-          class: 'mr-2 leading-tight' %>
-      <span class="text-sm text-gray-600">Employee is currently active</span>
-    </div>
-
-    <div class="flex items-center justify-between">
-      <%= form.submit 'Update', 
-          class: 'btn btn-primary hover:bg-blue-700 focus:outline-none focus:shadow-outline' %>
-      
-      <%= link_to 'Cancel', employees_path, 
-          class: 'inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4' %>
+<!-- app/views/employees/edit.html.erb -->
+<%= form_with(
+  model: @employee, 
+  local: true, 
+  class: 'employees-form',
+  data: { 
+    action: 'submit->employees#updateEmployee',
+    employees_target: 'editForm'
+  }
+) do |form| %>
+  <% if @employee.errors.any? %>
+    <div class="employees-form-errors" role="alert">
+      <h3><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h3>
+      <ul>
+        <% @employee.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
-</div>
+
+  <div class="employees-form-group">
+    <%= form.label :name, class: 'employees-form-label' %>
+    <%= form.text_field :name, 
+        class: 'employees-form-input', 
+        placeholder: 'Enter employee name',
+        required: true %>
+  </div>
+
+  <div class="employees-form-group">
+    <%= form.label :active, class: 'employees-form-label' %>
+    <%= form.check_box :active %>
+    <span>Employee is currently active</span>
+  </div>
+
+  <div class="employees-form-actions">
+    <%= form.submit 'Update', class: 'btn btn-primary' %>
+    <a 
+      href="#" 
+      data-action="click->employees#cancelEdit" 
+      class="btn btn-secondary">
+      Cancel
+    </a>
+  </div>
+<% end %>
