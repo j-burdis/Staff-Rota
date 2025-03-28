@@ -41,11 +41,14 @@
       </button>
     <% end %>
     
-    <button 
-      data-action="click->employees#destroy" 
-      class="btn btn-danger">
-      Delete
-    </button>
+    <%= button_to 'Delete', 
+    employee_path(@employee), 
+    method: :delete, 
+    data: { 
+      confirm: 'Are you sure you want to permanently delete this employee?',
+      turbolinks: false 
+    }, 
+    class: 'btn btn-danger' %>
   </div>
 
   <div class="edit-actions hidden">

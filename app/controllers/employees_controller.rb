@@ -25,15 +25,9 @@ class EmployeesController < ApplicationController
   end
 
   def edit
-    # render layout: false
   end
 
   def update
-    # if @employee.update(employee_params)
-    #   redirect_to employees_path, notice: 'Employee successfully updated.'
-    # else
-    #   render :edit
-    # end
     if @employee.update(employee_params)
       respond_to do |format|
         format.html { render :show }
@@ -67,15 +61,7 @@ class EmployeesController < ApplicationController
 
   def destroy
     if @employee.destroy
-      respond_to do |format|
-        format.html {
-          flash[:notice] = 'Employee permanently deleted.'
-          redirect_to employees_path
-        }
-        format.turbo_stream {
-          render turbo_stream: turbo_stream.remove("employee_#{@employee.id}")
-        }
-      end
+      redirect_to employees_path, notice: 'Employee permanently deleted.'
     else
       redirect_to employee_path(@employee), alert: 'Could not delete employee.'
     end

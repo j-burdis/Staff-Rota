@@ -104,7 +104,7 @@ export default class extends Controller {
     }
   }
 
-  updateEmployeeList(employeeId, formData, preserveName = false) {
+  updateEmployeeList(employeeId, formData) {
     const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
     
     if (listItem) {
@@ -113,29 +113,23 @@ export default class extends Controller {
       const statusElement = nameSpan.querySelector('.employees-list-item-status-active, .employees-list-item-status-inactive')
       
       // Determine the current active status from the details view
-      const detailsStatusElement = this.detailsTarget.querySelector('.employees-show-status span')
+      const detailsStatusElement = this.detailsTarget.querySelector('.employee-status')
       const isCurrentlyActive = detailsStatusElement.classList.contains('employees-list-item-status-active')
 
-      // Preserve the original name if specified
-      const originalName = preserveName ? nameElement.firstChild.textContent : null
-
       // Reset the name element
-      nameElement.innerHTML = ''
+      nameElement.classList.remove('inactive')
 
-      // Restore or update the name
-      const nameText = originalName || this.detailsTarget.querySelector('.employees-show-title').value
-      const nameTextNode = document.createTextNode(nameText)
-      nameElement.appendChild(nameTextNode)
+      // Update name
+      const nameText = detailsStatusElement.closest('.employees-show-header').querySelector('.employees-show-title').value
+      nameElement.innerHTML = nameText
 
-      // Update status
+      // Append status
       if (isCurrentlyActive) {
         nameElement.classList.remove('inactive')
-        statusElement.textContent = ' - Active'
-        statusElement.className = 'employees-list-item-status-active'
+        nameElement.innerHTML += `<span class="employees-list-item-status-active"> - Active</span>`
       } else {
         nameElement.classList.add('inactive')
-        statusElement.textContent = ' - Inactive'
-        statusElement.className = 'employees-list-item-status-inactive'
+        nameElement.innerHTML += `<span class="employees-list-item-status-inactive"> - Inactive</span>`
       }
     }
   }
@@ -218,46 +212,6 @@ export default class extends Controller {
       this.updateEmployeeList(employeeId, new FormData(), true)
     } catch (error) {
       console.error('Error reactivating employee:', error)
-    }
-  }
-
-  async destroy(event) {
-    event.preventDefault()
-    const employeeId = this.selectedEmployeeIdValue
-
-    if (!confirm('Are you sure you want to permanently delete this employee?')) {
-      return
-    }
-
-    try {
-      const response = await fetch(`/employees/${employeeId}`, 
-        this.getFetchOptions('DELETE')
-      )
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-
-      // Parse the response to get the redirect URL or confirmation
-      const responseText = await response.text()
-
-      // Remove the employee from the list
-      const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)?.closest('.employees-list-item')
-      if (listItem) {
-        listItem.remove()
-      }
-
-      // Clear details and edit form
-      this.detailsTarget.innerHTML = ''
-      this.editFormTarget.innerHTML = ''
-
-      // If response indicates a redirect or contains a confirmation message, you might want to handle it
-      if (responseText.includes('Employee deleted')) {
-        // Optional: show a notification or handle the response
-        console.log('Employee successfully deleted')
-      }
-    } catch (error) {
-      console.error('Error deleting employee:', error)
     }
   }
 }
