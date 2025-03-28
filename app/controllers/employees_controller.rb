@@ -21,10 +21,11 @@ class EmployeesController < ApplicationController
   end
 
   def show
+    respond_to(&:html)
   end
 
   def edit
-    render layout: false
+    # render layout: false
   end
 
   def update
@@ -34,15 +35,21 @@ class EmployeesController < ApplicationController
     #   render :edit
     # end
     if @employee.update(employee_params)
-      render 'show', layout: false
+      respond_to do |format|
+        format.html { render :show }
+      end
     else
-      render 'edit', layout: false, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :show, status: :unprocessable_entity }
+      end
     end
   end
 
   def deactivate
     if @employee.update(active: false)
-      redirect_to employees_path, notice: 'Employee was successfully deactivated.'
+      respond_to do |format|
+        format.html { render :show }
+      end
     else
       redirect_to employee_path(@employee), alert: 'Could not deactivate employee.'
     end
@@ -50,7 +57,9 @@ class EmployeesController < ApplicationController
 
   def reactivate
     if @employee.update(active: true)
-      redirect_to employees_path, notice: 'Employee was successfully reactivated.'
+      respond_to do |format|
+        format.html { render :show }
+      end
     else
       redirect_to employee_path(@employee), alert: 'Could not reactivate employee.'
     end
@@ -58,7 +67,9 @@ class EmployeesController < ApplicationController
 
   def destroy
     if @employee.destroy
-      redirect_to employees_path, notice: 'Employee permanently deleted.'
+      respond_to do |format|
+        format.html { redirect_to employees_path, notice: 'Employee permanently deleted.' }
+      end
     else
       redirect_to employee_path(@employee), alert: 'Could not delete employee.'
     end
