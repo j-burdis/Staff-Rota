@@ -20,23 +20,16 @@
 
 <div class="employees-show-actions">
   <div class="default-actions">
-    <a 
-      href="#" 
-      data-action="click->employees#startEdit" 
-      class="btn btn-secondary">
+    <a href="#" data-action="click->employees#startEdit" class="btn btn-secondary">
       Edit
     </a>
     
     <% if @employee.active? %>
-      <button 
-        data-action="click->employees#deactivate" 
-        class="btn btn-warning">
+      <button data-action="click->employees#deactivate" class="btn btn-warning">
         Deactivate
       </button>
     <% else %>
-      <button 
-        data-action="click->employees#reactivate" 
-        class="btn btn-success">
+      <button data-action="click->employees#reactivate" class="btn btn-success">
         Reactivate
       </button>
     <% end %>
@@ -59,8 +52,6 @@
         action: 'submit->employees#updateEmployee'
       }
     ) do |form| %>
-      <!-- Remove this duplicate input field -->
-      <!-- Instead, we'll use the one input field above and just enable/disable it -->
       
       <div class="employees-form-group">
         <%= form.check_box :active %>

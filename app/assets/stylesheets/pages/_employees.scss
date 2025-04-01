@@ -5,11 +5,15 @@
   margin: 0 auto;
   padding: 20px;
   display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  align-items: center;
 }
 
 .employees-list {
   width: 300px;
   padding-right: 20px;
+  border-right: 1px solid #ddd;
 }
 
 .employees-list-header {
@@ -47,7 +51,6 @@
 
 .employees-list-item-name.inactive {
   color: #888;
-  // text-decoration: line-through;
 }
 
 .employees-list-item-status-active {
@@ -59,14 +62,14 @@
 }
 
 .employees-details {
-  flex-grow: 1;
+  flex-grow: 0;
   padding-left: 20px;
 }
 
 .employees-show-container {
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  border-radius: 8px;
+  // background-color: white;
+  // box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  // border-radius: 8px;
   padding: 20px;
 }
 
@@ -86,9 +89,19 @@
   margin-top: 20px;
 }
 
+.default-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.default-actions .button_to {
+  margin: 0;
+}
+
 .employees-form {
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 300px;
+  // margin: 0 auto;
 }
 
 .employees-form-errors {
