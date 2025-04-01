@@ -8,15 +8,41 @@ class EmployeesController < ApplicationController
 
   def new
     @employee = Employee.new
+
+    respond_to do |format|
+      format.html { render layout: request.xhr? ? false : 'application' }
+    end
   end
 
   def create
     @employee = Employee.new(employee_params)
 
+    # if @employee.save
+    #   redirect_to employees_path, notice: 'Employee successfully created.'
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
+
     if @employee.save
-      redirect_to employees_path, notice: 'Employee successfully created.'
+      respond_to do |format|
+        format.html {
+          if request.xhr?
+            render json: { success: true }
+          else
+            redirect_to employees_path, notice: 'Employee successfully created.'
+          end
+        }
+      end
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html {
+          if request.xhr?
+            render :new, layout: false, status: :unprocessable_entity
+          else
+            render :new, status: :unprocessable_entity
+          end
+        }
+      end
     end
   end
 

@@ -1,10 +1,8 @@
 <!-- app/views/employees/new.html.erb -->
 <%= form_with(
   model: @employee, 
-  local: true, 
   class: 'employees-form',
   data: { 
-    controller: 'employees',
     action: 'submit->employees#createEmployee'
   }
 ) do |form| %>
@@ -35,6 +33,6 @@
 
   <div class="employees-form-actions">
     <%= form.submit 'Create Employee', class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', employees_path, class: 'btn btn-secondary' %>
+    <a href="#" class="btn btn-secondary" data-action="click->employees#cancelNewForm">Cancel</a>
   </div>
 <% end %>

@@ -229,4 +229,70 @@ export default class extends Controller {
       console.error('Error reactivating employee:', error)
     }
   }
+
+  showNewEmployeeForm(event) {
+    event.preventDefault()
+    
+    // Clear any existing employee details and forms
+    this.detailsTarget.innerHTML = ''
+    this.editFormTarget.innerHTML = ''
+    
+    // Fetch the new employee form
+    fetch('/employees/new', {
+      headers: {
+        'Accept': 'text/html'
+      }
+    })
+    .then(response => response.text())
+    .then(html => {
+      // Load the form into the details area
+      this.detailsTarget.innerHTML = `
+          <h2>Add New Employee</h2>
+          ${html}
+      `
+    })
+    .catch(error => {
+      console.error('Error loading new employee form:', error)
+    })
+  }
+  
+  createEmployee(event) {
+    event.preventDefault()
+    const form = event.target
+    const formData = new FormData(form)
+  
+    fetch('/employees', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'text/html',
+        'X-CSRF-Token': this.getCsrfToken()
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        // Reload the entire page to update the employee list
+        window.location.reload()
+      } else {
+        // Handle validation errors
+        return response.text().then(html => {
+          this.detailsTarget.innerHTML = `
+            <div class="employees-show-container">
+              <h2>Add New Employee</h2>
+              ${html}
+            </div>
+          `
+        })
+      }
+    })
+    .catch(error => {
+      console.error('Error creating employee:', error)
+    })
+  }
+
+  cancelNewForm(event) {
+    event.preventDefault()
+    // Clear the form from the details area
+    this.detailsTarget.innerHTML = ''
+  }
 }
