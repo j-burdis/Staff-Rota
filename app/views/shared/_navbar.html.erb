@@ -1,5 +1,5 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
-  <div class="container-fluid">
+  <%# <div class="container-fluid"> %>
     <div class="navbar-logo-name">
       <%= link_to root_path, class: "navbar-brand" do %>
         <i class="fa-solid fa-calendar-days"></i>
@@ -20,15 +20,24 @@
           <li class="nav-item">
             <%= link_to "Calendar", root_path, class: "nav-link" %>
           </li>
-          <li class="nav-item dropdown">
-            <a href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa-solid fa-bars"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Employees", employees_path, class: "dropdown-item" %>
-              <%= button_to "Log out", destroy_user_session_path, method: :delete, data: {turbo: :false}, class: "dropdown-item" %>
-            </div>
+
+          <li class="nav-item">
+              <%= link_to "Employees", employees_path, class: "nav-link" %>
           </li>
+
+          <li class="nav-item">
+              <%= button_to "Log out", destroy_user_session_path, method: :delete, data: {turbo: :false}, class: "nav-link" %>
+          </li>
+
+          <%# <li class="nav-item dropdown"> %>
+            <%# <a href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> %>
+              <%# <i class="fa-solid fa-bars"></i> %>
+            <%# </a> %>
+            <%# <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"> %>
+              <%#= link_to "Employees", employees_path, class: "dropdown-item" %>
+              <%#= button_to "Log out", destroy_user_session_path, method: :delete, data: {turbo: :false}, class: "dropdown-item" %>
+            <%# </div> %>
+          <%# </li> %>
         <% else %>
           <li class="nav-item">
             <%#= link_to "Login", new_user_session_path, class: "nav-link" %>
@@ -36,5 +45,5 @@
         <% end %>
       </ul>
     </div>
-  </div>
+  <%# </div> %>
 </div>
