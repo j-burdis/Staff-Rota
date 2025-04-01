@@ -222,15 +222,39 @@ export default class extends Controller {
       }
     }
     
-    // Hide status checkbox
+    // Hide status checkbox and reset status display to original state
     if (this.hasStatusCheckboxTarget) {
       this.statusCheckboxTarget.classList.add('hidden')
       
-      // Reset checkbox to match current status
-      const statusElement = this.element.querySelector('.employee-status')
-      const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
-      if (checkbox && statusElement) {
-        checkbox.checked = statusElement.classList.contains('employees-list-item-status-active')
+      // Reset checkbox and status display to match the original state
+      const employeeId = this.selectedEmployeeIdValue
+      const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
+      
+      if (listItem) {
+        const listItemWrapper = listItem.closest('.employees-list-item').querySelector('.employees-list-item-wrapper')
+        const statusElement = this.element.querySelector('.employee-status')
+        const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
+        
+        // Determine if the employee is active by checking the status in the list view
+        const isActive = listItemWrapper.querySelector('.employees-list-item-status-active') !== null
+        
+        // Update checkbox
+        if (checkbox) {
+          checkbox.checked = isActive
+        }
+        
+        // Reset status element to match
+        if (statusElement) {
+          if (isActive) {
+            statusElement.textContent = 'Active'
+            statusElement.classList.remove('employees-list-item-status-inactive')
+            statusElement.classList.add('employees-list-item-status-active')
+          } else {
+            statusElement.textContent = 'Inactive'
+            statusElement.classList.remove('employees-list-item-status-active')
+            statusElement.classList.add('employees-list-item-status-inactive')
+          }
+        }
       }
     }
   }
@@ -319,7 +343,7 @@ export default class extends Controller {
     .then(html => {
       // Load the form into the details area
       this.detailsTarget.innerHTML = `
-          <h2>Add New Employee</h2>
+          <h3>Add New Employee</h3>
           ${html}
       `
     })
@@ -350,7 +374,7 @@ export default class extends Controller {
         return response.text().then(html => {
           this.detailsTarget.innerHTML = `
             <div class="employees-show-container">
-              <h2>Add New Employee</h2>
+              <h3>Add New Employee</h3>
               ${html}
             </div>
           `
