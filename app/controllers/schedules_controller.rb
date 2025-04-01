@@ -21,7 +21,7 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    @employees = Employee.where(active: true)
+    @employees = Employee.where(active: true).order(active: :desc, id: :asc)
     @assigned_employee_ids = @schedule.employees.pluck(:id)
 
     respond_to do |format|

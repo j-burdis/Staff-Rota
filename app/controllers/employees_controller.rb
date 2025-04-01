@@ -2,7 +2,7 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[show edit update destroy deactivate reactivate]
 
   def index
-    @employees = Employee.all
+    @employees = Employee.all.order(active: :desc, id: :asc)
     @new_employee = Employee.new
   end
 
