@@ -128,29 +128,34 @@ export default class extends Controller {
     const listItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
     
     if (listItem) {
-      const nameSpan = listItem.closest('.employees-list-item')
-      const nameElement = nameSpan.querySelector('.employees-list-item-name')
-      const statusElement = nameSpan.querySelector('.employees-list-item-status-active, .employees-list-item-status-inactive')
+      const listItemWrapper = listItem.closest('.employees-list-item').querySelector('.employees-list-item-wrapper')
+      const nameElement = listItemWrapper.querySelector('.employees-list-item-name')
+      const statusElement = listItemWrapper.querySelector('.employees-list-item-status-active, .employees-list-item-status-inactive')
       
       // Determine the current active status from the details view
       const detailsStatusElement = this.detailsTarget.querySelector('.employee-status')
       const isCurrentlyActive = detailsStatusElement.classList.contains('employees-list-item-status-active')
-
-      // Reset the name element
-      nameElement.classList.remove('inactive')
-
-      // Update name
-      const nameText = detailsStatusElement.closest('.employees-show-header').querySelector('.employees-show-title').value
-      nameElement.innerHTML = nameText
-
-      // Append status
-      if (isCurrentlyActive) {
-        nameElement.classList.remove('inactive')
-        nameElement.innerHTML += `<span class="employees-list-item-status-active"> - Active</span>`
-      } else {
-        nameElement.classList.add('inactive')
-        nameElement.innerHTML += `<span class="employees-list-item-status-inactive"> - Inactive</span>`
+  
+      // Update name element (without the status text)
+      nameElement.classList.toggle('inactive', !isCurrentlyActive)
+      const nameText = this.detailsTarget.querySelector('.employees-show-title').value
+      nameElement.textContent = nameText
+  
+      // Update status element
+      if (statusElement) {
+        statusElement.remove() // Remove the old status element
       }
+      
+      // Create and append the new status element
+      const newStatusElement = document.createElement('span')
+      if (isCurrentlyActive) {
+        newStatusElement.className = 'employees-list-item-status-active'
+        newStatusElement.textContent = 'Active'
+      } else {
+        newStatusElement.className = 'employees-list-item-status-inactive'
+        newStatusElement.textContent = 'Inactive'
+      }
+      listItemWrapper.appendChild(newStatusElement)
     }
   }
 
@@ -188,9 +193,8 @@ export default class extends Controller {
       const employeeItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
       if (employeeItem) {
         const nameElement = employeeItem.closest('.employees-list-item').querySelector('.employees-list-item-name')
-        // Extract just the name without the status text
-        const nameText = nameElement.textContent.replace(/ - (Active|Inactive)$/, '')
-        this.nameInputTarget.value = nameText
+        // Extract the name without needing to handle status text
+        this.nameInputTarget.value = nameElement.textContent.trim()
       }
     }
   }

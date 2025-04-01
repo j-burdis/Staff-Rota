@@ -17,16 +17,18 @@
           id="employee_<%= employee.id %>"
           class="employees-list-item" 
           data-action="click->employees#showEmployee">
-          <span 
-            data-employee-id="<%= employee.id %>" 
-            class="employees-list-item-name <%= employee.active? ? '' : 'inactive' %>">
-            <%= employee.name %>
+          <div class="employees-list-item-wrapper">
+            <span 
+              data-employee-id="<%= employee.id %>" 
+              class="employees-list-item-name <%= employee.active? ? '' : 'inactive' %>">
+              <%= employee.name %>
+            </span>
             <% if employee.active? %>
-              <span class="employees-list-item-status-active"> - Active</span>
+              <span class="employees-list-item-status-active">Active</span>
             <% else %>
-              <span class="employees-list-item-status-inactive"> - Inactive</span>
+              <span class="employees-list-item-status-inactive">Inactive</span>
             <% end %>
-          </span>
+          </div>
         </div>
       <% end %>
     </div>
