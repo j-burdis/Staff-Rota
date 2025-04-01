@@ -10,6 +10,21 @@ export default class extends Controller {
     if (this.hasNameInputTarget) {
       this.nameInputTarget.disabled = true
     }
+
+    // Show placeholder initially if no employee is selected
+    if (!this.selectedEmployeeIdValue) {
+      this.showPlaceholder();
+    }
+  }
+
+  showPlaceholder() {
+    this.detailsTarget.innerHTML = `
+      <div class="employee-placeholder">
+        <div class="placeholder-icon">👤</div>
+        <h3>Select an employee</h3>
+        <p>Click on an employee from the list to view their details</p>
+      </div>
+    `;
   }
 
   // Helper method to get CSRF token
@@ -292,7 +307,7 @@ export default class extends Controller {
 
   cancelNewForm(event) {
     event.preventDefault()
-    // Clear the form from the details area
-    this.detailsTarget.innerHTML = ''
+    // Clear the form  and show placeholder
+    this.showPlaceholder();
   }
 }
