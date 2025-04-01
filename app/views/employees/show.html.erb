@@ -14,6 +14,10 @@
     <span class="employee-status <%= @employee.active? ? 'employees-list-item-status-active' : 'employees-list-item-status-inactive' %>">
       <%= @employee.active? ? 'Active' : 'Inactive' %>
     </span>
+    <!-- This checkbox will only be visible in edit mode -->
+    <span class="status-checkbox hidden" data-employees-target="statusCheckbox">
+      <%= check_box_tag 'employee[active]', '1', @employee.active?, id: 'employee_active_toggle' %>
+    </span>
   </div>
 </div>
 
@@ -44,21 +48,16 @@
   </div>
 
   <div class="edit-actions hidden">
-    <%= form_with(
-      model: @employee, 
-      local: false,
-      data: { 
-        action: 'submit->employees#updateEmployee'
-      }
-    ) do |form| %>
-      
-      <div class="employees-form-group">
-        <%= form.check_box :active %>
-        <span>Employee is currently active</span>
-      </div>
+  <%= form_with(
+    model: @employee, 
+    local: false,
+    data: { 
+      action: 'submit->employees#updateEmployee'
+    }
+  ) do |form| %>
 
-      <div class="edit-form-actions">
-        <%= form.submit 'Update', class: 'btn btn-primary' %>
+    <div class="edit-form-actions">
+      <%= form.submit 'Update', class: 'btn btn-primary' %>
         <a 
           href="#" 
           data-action="click->employees#cancelEdit" 

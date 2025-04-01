@@ -19,18 +19,12 @@
     </div>
   <% end %>
 
-  <div class="employees-form-group">
-    <%= form.label :name, class: 'employees-form-label' %>
-    <%= form.text_field :name, 
-        class: 'employees-form-input', 
-        placeholder: 'Enter employee name',
-        required: true %>
-  </div>
-
-  <div class="employees-form-group">
-    <%= form.label :active, class: 'employees-form-label' %>
+  <div class="employees-form-group status-toggle">
+    <strong>Status:</strong>
+    <span class="employee-status <%= @employee.active? ? 'employees-list-item-status-active' : 'employees-list-item-status-inactive' %>">
+      <%= @employee.active? ? 'Active' : 'Inactive' %>
+    </span>
     <%= form.check_box :active %>
-    <span>Employee is currently active</span>
   </div>
 
   <div class="employees-form-actions">

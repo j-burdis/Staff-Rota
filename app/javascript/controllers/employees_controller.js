@@ -2,7 +2,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "list", "details", "editForm", "nameInput" ]
+  static targets = [ "list", "details", "editForm", "nameInput", "statusCheckbox" ]
   static values = { selectedEmployeeId: Number }
 
   connect() {
@@ -15,6 +15,12 @@ export default class extends Controller {
     if (!this.selectedEmployeeIdValue) {
       this.showPlaceholder();
     }
+
+    this.element.addEventListener('change', event => {
+      if (event.target.name === 'employee[active]') {
+        this.updateStatusLabel(event.target);
+      }
+    });
   }
 
   showPlaceholder() {
@@ -84,6 +90,14 @@ export default class extends Controller {
     // Make sure to include the name from our input field
     if (this.hasNameInputTarget) {
       formData.set('employee[name]', this.nameInputTarget.value)
+    }
+
+    // Include the active status from our checkbox
+    if (this.hasStatusCheckboxTarget) {
+      const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
+      if (checkbox) {
+        formData.set('employee[active]', checkbox.checked ? '1' : '0')
+      }
     }
   
     try {
@@ -163,15 +177,26 @@ export default class extends Controller {
     event.preventDefault()
     const editActions = this.element.querySelector('.employees-show-actions .edit-actions')
     const defaultActions = this.element.querySelector('.employees-show-actions .default-actions')
-  
+
     // Show edit actions, hide default actions
     editActions.classList.remove('hidden')
     defaultActions.classList.add('hidden')
-  
+
     // Enable name input for editing
     if (this.hasNameInputTarget) {
       this.nameInputTarget.disabled = false
       this.nameInputTarget.focus()
+    }
+    
+    // Show status checkbox
+    if (this.hasStatusCheckboxTarget) {
+      this.statusCheckboxTarget.classList.remove('hidden')
+      
+      // Add an event listener to update the status text when checkbox changes
+      const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
+      if (checkbox) {
+        checkbox.addEventListener('change', this.updateStatusTextFromCheckbox.bind(this))
+      }
     }
   }
 
@@ -193,8 +218,36 @@ export default class extends Controller {
       const employeeItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
       if (employeeItem) {
         const nameElement = employeeItem.closest('.employees-list-item').querySelector('.employees-list-item-name')
-        // Extract the name without needing to handle status text
         this.nameInputTarget.value = nameElement.textContent.trim()
+      }
+    }
+    
+    // Hide status checkbox
+    if (this.hasStatusCheckboxTarget) {
+      this.statusCheckboxTarget.classList.add('hidden')
+      
+      // Reset checkbox to match current status
+      const statusElement = this.element.querySelector('.employee-status')
+      const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
+      if (checkbox && statusElement) {
+        checkbox.checked = statusElement.classList.contains('employees-list-item-status-active')
+      }
+    }
+  }
+
+  updateStatusTextFromCheckbox(event) {
+    const checkbox = event.target
+    const statusElement = this.element.querySelector('.employee-status')
+    
+    if (statusElement) {
+      if (checkbox.checked) {
+        statusElement.textContent = 'Active'
+        statusElement.classList.remove('employees-list-item-status-inactive')
+        statusElement.classList.add('employees-list-item-status-active')
+      } else {
+        statusElement.textContent = 'Inactive'
+        statusElement.classList.remove('employees-list-item-status-active')
+        statusElement.classList.add('employees-list-item-status-inactive')
       }
     }
   }
@@ -313,5 +366,22 @@ export default class extends Controller {
     event.preventDefault()
     // Clear the form  and show placeholder
     this.showPlaceholder();
+  }
+
+  updateStatusText(event) {
+    const checkbox = event.target;
+    const statusElement = checkbox.closest('.employees-show-status').querySelector('.employee-status');
+    
+    if (statusElement) {
+      if (checkbox.checked) {
+        statusElement.textContent = 'Active';
+        statusElement.classList.remove('employees-list-item-status-inactive');
+        statusElement.classList.add('employees-list-item-status-active');
+      } else {
+        statusElement.textContent = 'Inactive';
+        statusElement.classList.remove('employees-list-item-status-active');
+        statusElement.classList.add('employees-list-item-status-inactive');
+      }
+    }
   }
 }

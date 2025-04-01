@@ -25,10 +25,12 @@
         required: true %>
   </div>
 
-  <div class="employees-form-group">
-    <%= form.label :active, class: 'employees-form-label' %>
-    <%= form.check_box :active, checked: true %>
-    <span>Employee is currently active</span>
+  <div class="employees-form-group employees-show-status">
+    <strong>Status:</strong>
+    <span class="employee-status employees-list-item-status-active">Active</span>
+    <span class="status-checkbox">
+      <%= form.check_box :active, checked: true, data: { action: "change->employees#updateStatusText" } %>
+    </span>
   </div>
 
   <div class="employees-form-actions">

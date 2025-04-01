@@ -115,7 +115,19 @@
 }
 
 .employees-show-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 15px;
+}
+
+.status-checkbox {
+  margin-top: 4px;
+  margin-left: 10px;
+}
+
+.status-checkbox input[type="checkbox"] {
+  margin: 0;
 }
 
 .employees-show-actions {
@@ -150,6 +162,17 @@
 
 .employees-form-group {
   margin-bottom: 15px;
+}
+
+.status-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.status-toggle input[type="checkbox"] {
+  margin: 0;
 }
 
 .employees-form-label {
