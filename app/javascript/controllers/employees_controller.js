@@ -65,7 +65,12 @@ export default class extends Controller {
     const form = event.target
     const formData = new FormData(form)
     const employeeId = this.selectedEmployeeIdValue
-
+    
+    // Make sure to include the name from our input field
+    if (this.hasNameInputTarget) {
+      formData.set('employee[name]', this.nameInputTarget.value)
+    }
+  
     try {
       const response = await fetch(`/employees/${employeeId}`, {
         method: 'PATCH',
@@ -74,11 +79,11 @@ export default class extends Controller {
           'Accept': 'text/html'
         }
       })
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
-
+  
       const html = await response.text()
       
       // Update details with new employee information
@@ -138,11 +143,11 @@ export default class extends Controller {
     event.preventDefault()
     const editActions = this.element.querySelector('.employees-show-actions .edit-actions')
     const defaultActions = this.element.querySelector('.employees-show-actions .default-actions')
-
+  
     // Show edit actions, hide default actions
     editActions.classList.remove('hidden')
     defaultActions.classList.add('hidden')
-
+  
     // Enable name input for editing
     if (this.hasNameInputTarget) {
       this.nameInputTarget.disabled = false
@@ -154,14 +159,24 @@ export default class extends Controller {
     event.preventDefault()
     const editActions = this.element.querySelector('.employees-show-actions .edit-actions')
     const defaultActions = this.element.querySelector('.employees-show-actions .default-actions')
-
+  
     // Hide edit actions, show default actions
     editActions.classList.add('hidden')
     defaultActions.classList.remove('hidden')
-
-    // Disable name input
+  
+    // Disable name input and reset to original value
     if (this.hasNameInputTarget) {
       this.nameInputTarget.disabled = true
+      
+      // Get the current employee data to reset the field if needed
+      const employeeId = this.selectedEmployeeIdValue
+      const employeeItem = this.listTarget.querySelector(`[data-employee-id="${employeeId}"]`)
+      if (employeeItem) {
+        const nameElement = employeeItem.closest('.employees-list-item').querySelector('.employees-list-item-name')
+        // Extract just the name without the status text
+        const nameText = nameElement.textContent.replace(/ - (Active|Inactive)$/, '')
+        this.nameInputTarget.value = nameText
+      }
     }
   }
 

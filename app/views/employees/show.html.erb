@@ -1,5 +1,6 @@
 <!-- app/views/employees/show.html.erb -->
 <div class="employees-show-header">
+  <!-- Keep only one input field that's always visible but initially disabled -->
   <input 
     type="text" 
     name="employee[name]" 
@@ -7,7 +8,6 @@
     class="employees-show-title" 
     disabled 
     data-employees-target="nameInput"
-    data-action="click->employees#startEdit"
   />
   
   <div class="employees-show-status">
@@ -59,13 +59,8 @@
         action: 'submit->employees#updateEmployee'
       }
     ) do |form| %>
-      <%= form.text_field :name, 
-          class: 'employees-show-title', 
-          placeholder: 'Enter employee name',
-          required: true,
-          data: { 
-            employees_target: 'nameInput'
-          } %>
+      <!-- Remove this duplicate input field -->
+      <!-- Instead, we'll use the one input field above and just enable/disable it -->
       
       <div class="employees-form-group">
         <%= form.check_box :active %>
