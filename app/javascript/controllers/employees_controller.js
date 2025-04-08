@@ -15,12 +15,6 @@ export default class extends Controller {
     if (!this.selectedEmployeeIdValue) {
       this.showPlaceholder();
     }
-
-    this.element.addEventListener('change', event => {
-      if (event.target.name === 'employee[active]') {
-        this.updateStatusLabel(event.target);
-      }
-    });
   }
 
   showPlaceholder() {
@@ -188,14 +182,23 @@ export default class extends Controller {
       this.nameInputTarget.focus()
     }
     
-    // Show status checkbox
+    // Show status checkbox but ensure the status text always shows "Active"
     if (this.hasStatusCheckboxTarget) {
       this.statusCheckboxTarget.classList.remove('hidden')
       
-      // Add an event listener to update the status text when checkbox changes
+      // Get the current active status
+      const statusElement = this.element.querySelector('.employee-status')
+      const isActive = statusElement.classList.contains('employees-list-item-status-active')
+      
+      // Make sure the checkbox reflects the actual active status
       const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
       if (checkbox) {
-        checkbox.addEventListener('change', this.updateStatusTextFromCheckbox.bind(this))
+        checkbox.checked = isActive
+        
+        // Always display "Active" in edit mode, regardless of checkbox state
+        if (statusElement) {
+          statusElement.textContent = 'Active'
+        }
       }
     }
   }
@@ -255,23 +258,6 @@ export default class extends Controller {
             statusElement.classList.add('employees-list-item-status-inactive')
           }
         }
-      }
-    }
-  }
-
-  updateStatusTextFromCheckbox(event) {
-    const checkbox = event.target
-    const statusElement = this.element.querySelector('.employee-status')
-    
-    if (statusElement) {
-      if (checkbox.checked) {
-        statusElement.textContent = 'Active'
-        statusElement.classList.remove('employees-list-item-status-inactive')
-        statusElement.classList.add('employees-list-item-status-active')
-      } else {
-        statusElement.textContent = 'Inactive'
-        statusElement.classList.remove('employees-list-item-status-active')
-        statusElement.classList.add('employees-list-item-status-inactive')
       }
     }
   }
