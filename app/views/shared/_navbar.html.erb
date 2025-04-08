@@ -1,11 +1,12 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <%# <div class="container-fluid"> %>
-    <div class="navbar-logo-name">
-      <%= link_to root_path, class: "navbar-brand" do %>
+    
+    <%= link_to root_path, class: "navbar-logo-name" do %>
+      <div class="navbar-brand">
         <i class="fa-solid fa-calendar-days"></i>
-      <% end %>
-        <h2>MyRota</h2>
-    </div>
+      </div>
+      <h2>MyRota</h2>
+    <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -21,11 +22,11 @@
             <%= link_to "Calendar", root_path, class: "nav-link" %>
           </li>
 
-          <li class="nav-item">
-              <%= link_to "Employees", employees_path, class: "nav-link" %>
+          <li class="nav-item border-start">
+              <%= link_to "All Staff", employees_path, class: "nav-link" %>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item border-start">
               <%= button_to "Log out", destroy_user_session_path, method: :delete, data: {turbo: :false}, class: "nav-link" %>
           </li>
 
