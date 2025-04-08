@@ -377,21 +377,4 @@ export default class extends Controller {
     // Clear the form  and show placeholder
     this.showPlaceholder();
   }
-
-  updateStatusText(event) {
-    const checkbox = event.target;
-    const statusElement = checkbox.closest('.employees-show-status').querySelector('.employee-status');
-    
-    if (statusElement) {
-      if (checkbox.checked) {
-        statusElement.textContent = 'Active';
-        statusElement.classList.remove('employees-list-item-status-inactive');
-        statusElement.classList.add('employees-list-item-status-active');
-      } else {
-        statusElement.textContent = 'Inactive';
-        statusElement.classList.remove('employees-list-item-status-active');
-        statusElement.classList.add('employees-list-item-status-inactive');
-      }
-    }
-  }
 }
