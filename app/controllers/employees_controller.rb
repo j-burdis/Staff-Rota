@@ -19,23 +19,23 @@ class EmployeesController < ApplicationController
 
     if @employee.save
       respond_to do |format|
-        format.html {
+        format.html do
           if request.xhr?
             render json: { success: true }
           else
             redirect_to employees_path, notice: 'Employee successfully created.'
           end
-        }
+        end
       end
     else
       respond_to do |format|
-        format.html {
+        format.html do
           if request.xhr?
             render :new, layout: false, status: :unprocessable_entity
           else
             render :new, status: :unprocessable_entity
           end
-        }
+        end
       end
     end
   end

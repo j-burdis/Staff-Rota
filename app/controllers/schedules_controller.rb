@@ -38,10 +38,9 @@ class SchedulesController < ApplicationController
     # Find or create the schedule for the specific date
     @schedule = Schedule.find_or_create_by(date: params[:id])
 
-    # Normalize employee_ids to an array, defaulting to empty array
+    # Normalize employee_ids to an array or empty array
     employee_ids = params[:employee_ids] || []
 
-    # Begin a transaction to ensure all changes are atomic
     ActiveRecord::Base.transaction do
       # Remove employees not in the new list
       @schedule.employee_schedules.where.not(employee_id: employee_ids).destroy_all
@@ -75,8 +74,8 @@ class SchedulesController < ApplicationController
     render json: response_data
   rescue ActiveRecord::RecordInvalid => e
     # Render error response
-    render json: { 
-      error: e.message 
+    render json: {
+      error: e.message
     }, status: :unprocessable_entity
   end
 

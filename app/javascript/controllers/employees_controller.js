@@ -81,12 +81,12 @@ export default class extends Controller {
     const formData = new FormData(form)
     const employeeId = this.selectedEmployeeIdValue
     
-    // Make sure to include the name from our input field
+    // Include the name from the input field
     if (this.hasNameInputTarget) {
       formData.set('employee[name]', this.nameInputTarget.value)
     }
 
-    // Include the active status from our checkbox
+    // Include active status from the checkbox
     if (this.hasStatusCheckboxTarget) {
       const checkbox = this.statusCheckboxTarget.querySelector('input[type="checkbox"]')
       if (checkbox) {
@@ -140,21 +140,21 @@ export default class extends Controller {
       const nameElement = listItemWrapper.querySelector('.employees-list-item-name')
       const statusElement = listItemWrapper.querySelector('.employees-list-item-status-active, .employees-list-item-status-inactive')
       
-      // Determine the current active status from the details view
+      // Determine current active status from the details view
       const detailsStatusElement = this.detailsTarget.querySelector('.employee-status')
       const isCurrentlyActive = detailsStatusElement.classList.contains('employees-list-item-status-active')
   
-      // Update name element (without the status text)
+      // Update name element (without status text)
       nameElement.classList.toggle('inactive', !isCurrentlyActive)
       const nameText = this.detailsTarget.querySelector('.employees-show-title').value
       nameElement.textContent = nameText
   
       // Update status element
       if (statusElement) {
-        statusElement.remove() // Remove the old status element
+        statusElement.remove() // Remove old status element
       }
       
-      // Create and append the new status element
+      // Create and append new status element
       const newStatusElement = document.createElement('span')
       if (isCurrentlyActive) {
         newStatusElement.className = 'employees-list-item-status-active'
@@ -315,11 +315,11 @@ export default class extends Controller {
   showNewEmployeeForm(event) {
     event.preventDefault()
     
-    // Clear any existing employee details and forms
+    // Clear any existing employee details
     this.detailsTarget.innerHTML = ''
     this.editFormTarget.innerHTML = ''
     
-    // Fetch the new employee form
+    // Fetch new employee form
     fetch('/employees/new', {
       headers: {
         'Accept': 'text/html'
@@ -327,7 +327,7 @@ export default class extends Controller {
     })
     .then(response => response.text())
     .then(html => {
-      // Load the form into the details area
+      // Load form into the details area
       this.detailsTarget.innerHTML = `
           <h3>Add New Employee</h3>
           ${html}
@@ -353,7 +353,7 @@ export default class extends Controller {
     })
     .then(response => {
       if (response.ok) {
-        // Reload the entire page to update the employee list
+        // Reload page to update employee list
         window.location.reload()
       } else {
         // Handle validation errors
@@ -374,7 +374,7 @@ export default class extends Controller {
 
   cancelNewForm(event) {
     event.preventDefault()
-    // Clear the form  and show placeholder
+    // Clear form, show placeholder
     this.showPlaceholder();
   }
 }

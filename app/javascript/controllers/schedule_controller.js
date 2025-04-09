@@ -45,7 +45,7 @@ export default class extends Controller {
   }
 
   updateCheckboxes(employeeIds) {
-    // Uncheck all checkboxes first
+    // Uncheck all checkboxes
     this.editPanelTarget.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
       checkbox.checked = false
     })
